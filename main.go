@@ -23,6 +23,7 @@ var (
 
 func main() {
 	isCentered = hasArg("-c")
+	options, maxLen = getOptionsFromStdin()
 
 	defaultStyle = tcell.StyleDefault.
 		Background(tcell.ColorReset).
@@ -31,8 +32,6 @@ func main() {
 		Background(tcell.ColorWhite).
 		Foreground(tcell.ColorBlack)
 	selected = 0
-
-	options, maxLen = getOptionsFromStdin()
 
 	s := initScreen()
 	defer finalizeScreen(s)
