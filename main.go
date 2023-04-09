@@ -19,13 +19,14 @@ var (
 	defaultStyle  tcell.Style
 	selectedStyle tcell.Style
 
+	isCentered    *bool
 	menuTitle     *string
 	menuTitlePosX int
 )
 
 func main() {
 	options, maxLen = GetOptionsFromStdin()
-	var isCentered = flag.Bool("c", false, "center the menu")
+	isCentered = flag.Bool("c", false, "center the menu")
 	menuTitle = flag.String("t", "", "title of the menu")
 	flag.Parse()
 
