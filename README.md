@@ -17,3 +17,7 @@ Use the up and down arrows to move between menu options and enter to finalize yo
 Just pipe in input from stdin to tmenu.
 1. From another shell command: `echo -e "option1\noption2\noption3" | tmenu`
 2. From a file: `tmenu < options.txt` 
+
+## Flags:
+- `-t <title>` -- adds a title at the top of the menu
+- `-c` -- centers the menu
