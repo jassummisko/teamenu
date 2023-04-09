@@ -17,12 +17,9 @@ var (
 
 	defaultStyle  tcell.Style
 	selectedStyle tcell.Style
-
-	isCentered bool
 )
 
 func main() {
-	isCentered = hasArg("-c")
 	options, maxLen = getOptionsFromStdin()
 
 	defaultStyle = tcell.StyleDefault.
@@ -37,7 +34,7 @@ func main() {
 	defer finalizeScreen(s)
 	defer os.Exit(1)
 
-	if isCentered {
+	if hasArg("-c") {
 		initPosX, initPosY = s.Size()
 		initPosX /= 2
 		initPosY /= 2
