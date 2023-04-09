@@ -67,3 +67,23 @@ func readStdin() string {
 func capIntBetweenValues(min int, val int, max int) int {
 	return int(math.Max(math.Min(float64(max), float64(val)), float64(min)))
 }
+
+func getOptionsFromStdin() ([]string, int) {
+	opt := strings.Split(readStdin(), "\n")
+	ml := 0
+	for _, o := range opt {
+		if len(o) > ml {
+			ml = len(o)
+		}
+	}
+	return opt, ml
+}
+
+func hasArg(arg string) bool {
+	for _, s := range os.Args {
+		if s == arg {
+			return true
+		}
+	}
+	return false
+}
