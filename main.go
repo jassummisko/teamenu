@@ -32,11 +32,11 @@ func main() {
 		Foreground(tcell.ColorBlack)
 	selected = 0
 
+	options, maxLen = getOptionsFromStdin()
+
 	s := initScreen()
 	defer finalizeScreen(s)
 	defer os.Exit(1)
-
-	options, maxLen = getOptionsFromStdin()
 
 	if isCentered {
 		initPosX, initPosY = s.Size()
