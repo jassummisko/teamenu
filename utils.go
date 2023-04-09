@@ -9,7 +9,7 @@ import (
 	"github.com/gdamore/tcell/v2"
 )
 
-func drawText(s tcell.Screen, x1, y1, x2, y2 int, style tcell.Style, text string) {
+func DrawText(s tcell.Screen, x1, y1, x2, y2 int, style tcell.Style, text string) {
 	row := y1
 	col := x1
 	for _, r := range text {
@@ -25,7 +25,7 @@ func drawText(s tcell.Screen, x1, y1, x2, y2 int, style tcell.Style, text string
 	}
 }
 
-func drawBox(s tcell.Screen, x1, y1, x2, y2 int, style tcell.Style) {
+func DrawBox(s tcell.Screen, x1, y1, x2, y2 int, style tcell.Style) {
 	if y2 < y1 {
 		y1, y2 = y2, y1
 	}
@@ -56,7 +56,7 @@ func drawBox(s tcell.Screen, x1, y1, x2, y2 int, style tcell.Style) {
 	}
 }
 
-func readStdin() string {
+func ReadStdin() string {
 	stdin, err := io.ReadAll(os.Stdin)
 	if err != nil {
 		panic(err)
@@ -64,12 +64,12 @@ func readStdin() string {
 	return strings.Trim(string(stdin), "\n")
 }
 
-func capIntBetweenValues(min int, val int, max int) int {
+func CapIntBetweenValues(min int, val int, max int) int {
 	return int(math.Max(math.Min(float64(max), float64(val)), float64(min)))
 }
 
-func getOptionsFromStdin() ([]string, int) {
-	opt := strings.Split(readStdin(), "\n")
+func GetOptionsFromStdin() ([]string, int) {
+	opt := strings.Split(ReadStdin(), "\n")
 	ml := 0
 	for _, o := range opt {
 		if len(o) > ml {
@@ -77,13 +77,4 @@ func getOptionsFromStdin() ([]string, int) {
 		}
 	}
 	return opt, ml
-}
-
-func hasArg(arg string) bool {
-	for _, s := range os.Args {
-		if s == arg {
-			return true
-		}
-	}
-	return false
 }

@@ -1,6 +1,7 @@
 package main
 
 import (
+	"flag"
 	"fmt"
 	"os"
 
@@ -17,10 +18,16 @@ var (
 
 	defaultStyle  tcell.Style
 	selectedStyle tcell.Style
+
+	menuTitle     *string
+	menuTitlePosX int
 )
 
 func main() {
-	options, maxLen = getOptionsFromStdin()
+	options, maxLen = GetOptionsFromStdin()
+	var isCentered = flag.Bool("c", false, "center the menu")
+	menuTitle = flag.String("t", "", "title of the menu")
+	flag.Parse()
 
 	defaultStyle = tcell.StyleDefault.
 		Background(tcell.ColorReset).
@@ -30,29 +37,31 @@ func main() {
 		Foreground(tcell.ColorBlack)
 	selected = 0
 
-	s := initScreen()
-	defer finalizeScreen(s)
+	s := InitScreen()
+	defer FinalizeScreen(s)
 	defer os.Exit(1)
 
-	if hasArg("-c") {
+	if *isCentered {
 		initPosX, initPosY = s.Size()
 		initPosX /= 2
 		initPosY /= 2
 		initPosX -= maxLen/2 + 1
 		initPosY -= len(options)/2 + 1
+		menuTitlePosX = initPosX - len(*menuTitle)/2 + 1 + maxLen/2
 	} else {
-		initPosX, initPosY = 0, 0
+		initPosX, initPosY = 0, 1
+		menuTitlePosX = initPosX
 	}
 
 	s.SetStyle(defaultStyle)
 	for {
-		selected = capIntBetweenValues(0, selected, len(options)-1)
-		draw(s)
-		handleEvents(s)
+		selected = CapIntBetweenValues(0, selected, len(options)-1)
+		DrawMenu(s)
+		HandleEvents(s)
 	}
 }
 
-func initScreen() tcell.Screen {
+func InitScreen() tcell.Screen {
 	s, err := tcell.NewScreen()
 	if err != nil {
 		panic(err)
@@ -63,39 +72,40 @@ func initScreen() tcell.Screen {
 	return s
 }
 
-func handleEvents(s tcell.Screen) {
+func HandleEvents(s tcell.Screen) {
 	ev := s.PollEvent()
 	switch ev := ev.(type) {
 	case *tcell.EventResize:
 		s.Sync()
 	case *tcell.EventKey:
 		if ev.Key() == tcell.KeyEscape || ev.Key() == tcell.KeyCtrlC {
-			finalizeScreen(s)
+			FinalizeScreen(s)
 			os.Exit(0)
 		} else if ev.Key() == tcell.KeyDown {
 			selected += 1
 		} else if ev.Key() == tcell.KeyUp {
 			selected -= 1
 		} else if ev.Key() == tcell.KeyEnter {
-			outputAndExit(s, options[selected])
+			OutputAndExit(s, options[selected])
 		}
 	}
 }
 
-func draw(s tcell.Screen) {
+func DrawMenu(s tcell.Screen) {
 	s.Clear()
-	drawBox(s, initPosX, initPosY, initPosX+maxLen+1, initPosY+len(options)+1, defaultStyle)
+	DrawBox(s, initPosX, initPosY, initPosX+maxLen+1, initPosY+len(options)+1, defaultStyle)
+	DrawText(s, menuTitlePosX, initPosY-1, menuTitlePosX+len(*menuTitle), initPosY-1, defaultStyle, *menuTitle)
 	for i, o := range options {
 		style := defaultStyle
 		if selected == i {
 			style = selectedStyle
 		}
-		drawText(s, initPosX+1, initPosY+1+i, initPosX+maxLen+1, initPosY+1+i, style, o)
+		DrawText(s, initPosX+1, initPosY+1+i, initPosX+maxLen+1, initPosY+1+i, style, o)
 	}
 	s.Show()
 }
 
-func finalizeScreen(s tcell.Screen) {
+func FinalizeScreen(s tcell.Screen) {
 	err := recover()
 	s.Fini()
 	if err != nil {
@@ -103,8 +113,8 @@ func finalizeScreen(s tcell.Screen) {
 	}
 }
 
-func outputAndExit(s tcell.Screen, out string) {
-	finalizeScreen(s)
+func OutputAndExit(s tcell.Screen, out string) {
+	FinalizeScreen(s)
 	fmt.Println(out)
 	os.Exit(0)
 }
