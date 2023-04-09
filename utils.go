@@ -1,6 +1,11 @@
 package main
 
 import (
+	"io"
+	"math"
+	"os"
+	"strings"
+
 	"github.com/gdamore/tcell/v2"
 )
 
@@ -49,4 +54,16 @@ func drawBox(s tcell.Screen, x1, y1, x2, y2 int, style tcell.Style) {
 		s.SetContent(x1, y2, tcell.RuneLLCorner, nil, style)
 		s.SetContent(x2, y2, tcell.RuneLRCorner, nil, style)
 	}
+}
+
+func readStdin() string {
+	stdin, err := io.ReadAll(os.Stdin)
+	if err != nil {
+		panic(err)
+	}
+	return strings.Trim(string(stdin), "\n")
+}
+
+func capIntBetweenValues(min int, val int, max int) int {
+	return int(math.Max(math.Min(float64(max), float64(val)), float64(min)))
 }

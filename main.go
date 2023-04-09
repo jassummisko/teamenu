@@ -2,8 +2,6 @@ package main
 
 import (
 	"fmt"
-	"io"
-	"math"
 	"os"
 	"strings"
 
@@ -19,9 +17,9 @@ func main() {
 		panic(err)
 	}
 
-	defStyle := tcell.StyleDefault.Background(tcell.ColorReset).Foreground(tcell.ColorReset)
+	defaultStyle := tcell.StyleDefault.Background(tcell.ColorReset).Foreground(tcell.ColorReset)
 	selectedStyle := tcell.StyleDefault.Background(tcell.ColorWhite).Foreground(tcell.ColorBlack)
-	s.SetStyle(defStyle)
+	s.SetStyle(defaultStyle)
 	s.Clear()
 
 	defer os.Exit(0)
@@ -38,9 +36,9 @@ func main() {
 	for {
 		selected = capIntBetweenValues(0, selected, len(options)-1)
 		s.Clear()
-		drawBox(s, 0, 0, maxLen, len(options)+1, defStyle)
+		drawBox(s, 0, 0, maxLen, len(options)+1, defaultStyle)
 		for i, o := range options {
-			style := defStyle
+			style := defaultStyle
 			if selected == i {
 				style = selectedStyle
 			}
@@ -67,19 +65,11 @@ func main() {
 	}
 }
 
-func readStdin() string {
-	stdin, err := io.ReadAll(os.Stdin)
+func finalizeScreen(s tcell.Screen) {
+	err := recover()
+	s.Fini()
 	if err != nil {
 		panic(err)
-	}
-	return strings.Trim(string(stdin), "\n")
-}
-
-func finalizeScreen(s tcell.Screen) {
-	maybePanic := recover()
-	s.Fini()
-	if maybePanic != nil {
-		panic(maybePanic)
 	}
 }
 
@@ -87,8 +77,4 @@ func outputAndExit(s tcell.Screen, out string) {
 	finalizeScreen(s)
 	fmt.Println(out)
 	os.Exit(0)
-}
-
-func capIntBetweenValues(min int, val int, max int) int {
-	return int(math.Max(math.Min(float64(max), float64(val)), float64(min)))
 }

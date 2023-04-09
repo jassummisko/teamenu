@@ -1,1 +1,2 @@
 - [ ] Implement text input
+- [ ] Implement only seeing a maximum of whatever amount of options with "..." at the top and bottom to signify there is more
