@@ -25,6 +25,7 @@ var (
 
 func main() {
 	options, maxLen = GetOptionsFromStdin()
+
 	isCentered = flag.Bool("c", false, "center the menu")
 	menuTitle = flag.String("t", "", "title of the menu")
 	flag.Parse()

@@ -1,0 +1,3 @@
+#!/bin/bash
+city="$(echo -e "Paris\nLondon\nStockholm\nBrussels\nMadrid\nPrague" | tmenu -c -t "Select a city")"
+echo "$(curl wttr.in/$city)"
