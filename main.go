@@ -53,11 +53,4 @@ func main() {
 		initPosX, initPosY = 0, 1
 		menuTitlePosX = initPosX
 	}
-
-	s.SetStyle(defaultStyle)
-	for {
-		selected = CapIntBetweenValues(0, selected, len(options)-1)
-		DrawMenu(s)
-		HandleEvents(s)
-	}
 }
