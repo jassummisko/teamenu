@@ -25,6 +25,7 @@ var (
 
 func main() {
 	options, maxLen = GetOptionsFromStdin()
+
 	isCentered = flag.Bool("c", false, "center the menu")
 	menuTitle = flag.String("t", "", "title of the menu")
 	flag.Parse()
@@ -51,12 +52,5 @@ func main() {
 	} else {
 		initPosX, initPosY = 0, 1
 		menuTitlePosX = initPosX
-	}
-
-	s.SetStyle(defaultStyle)
-	for {
-		selected = CapIntBetweenValues(0, selected, len(options)-1)
-		DrawMenu(s)
-		HandleEvents(s)
 	}
 }
