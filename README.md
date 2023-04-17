@@ -1,4 +1,4 @@
-![teamenu](https://github.com/jassummisko/teamenu/blob/master/img/logo.png)
+![teamenu](https://github.com/jassummisko/teamenu/blob/master/img/teamenu.png)
 
 # teamenu: a simple terminal menu utility
 
