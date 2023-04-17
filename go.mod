@@ -1,4 +1,4 @@
-module github.com/jassummisko/tmenu
+module github.com/jassummisko/teamenu
 
 go 1.20
 
